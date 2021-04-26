@@ -19,7 +19,6 @@ export const deleteMark = (req, res) => {
         marks_filtered = user.marks.filter(function (value, index, arr) {
             return value._id != req.params.markId;
         });
-    }).then(() => {
         User.findOneAndUpdate({ _id: req.params.userId }, { $set: { "marks": marks_filtered } }, { new: true }, (err, user) => {
             if (err) return res.sendStatus(403)
             res.json(user)
