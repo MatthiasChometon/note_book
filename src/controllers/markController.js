@@ -1,27 +1,43 @@
 import mongoose from 'mongoose';
-import { UserSchema } from '../models/userModel';
+
 import { MarkSchema } from '../models/markModel';
-
-const User = mongoose.model('User', UserSchema);
+import { UserSchema } from '../models/userModel';
 const Mark = mongoose.model('Mark', MarkSchema);
+const User = mongoose.model('User', UserSchema);
 
-export const addMark = (req, res) => {
+import { ModelService } from '../services/modelService'
+const userService = new ModelService(UserSchema)
+
+export const addMark = async (req, res) => {
+    if (!req.params.userId) res.send('There is no user id')
     let newMark = new Mark(req.body);
 
-    User.findOneAndUpdate({ _id: req.params.userId }, { $addToSet: { "marks": [newMark] } }, { new: true }, (err, mark) => {
-        if (err) return res.sendStatus(403)
+    if (req.params.userId) newMark.userId = req.params.userId
+    newMark.save(newMark, (err, mark) => {
+        if (err) res.json(err)
         res.json(mark)
-    });
+    })
 };
 export const deleteMark = (req, res) => {
-    var marks_filtered = [];
-    const user = User.findById({ _id: req.params.userId }, (err, user) => {
-        marks_filtered = user.marks.filter(function (value, index, arr) {
-            return value._id != req.params.markId;
-        });
-        User.findOneAndUpdate({ _id: req.params.userId }, { $set: { "marks": marks_filtered } }, { new: true }, (err, user) => {
-            if (err) return res.sendStatus(403)
-            res.json(user)
-        });
+    if (!req.params.markId) res.send("no id for mark")
+    Mark.findByIdAndDelete({ _id: req.params.markId }, (err) => {
+        if (err) res.json(err)
+        res.json("mark deleted")
     });
+};
+
+export const updateMark = (req, res) => {
+    if (!req.params.markId) res.send("no id for mark")
+    Mark.findByIdAndUpdate({ _id: req.params.markId }, req.body, (err, mark) => {
+        if (err) res.json(err)
+        res.json(mark)
+    })
+};
+
+export const getAllMarks = (req, res) => {
+    if (!req.params.userId) res.send("no id for user")
+    Mark.find({ userId: req.params.userId }, (err, marks) => {
+        if (err) res.json(err)
+        res.json(marks)
+    })
 };

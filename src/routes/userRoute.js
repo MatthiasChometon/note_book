@@ -1,41 +1,14 @@
 import {
-    addNewUser, getUserWithID
+    getUserWithID
 } from '../controllers/userController';
 
 import { Router } from 'express';
 const router = new Router();
 
-
-router.route('/user')
-    .post(addNewUser);
+import { AuthService } from '../services/authService'
+const authService = new AuthService()
 
 router.route('/user/:userId')
-    .get(getUserWithID);
-
-
-// .get((req, res, next) => {
-//     // middleware
-//     console.log(`Request de: ${req.originalUrl}`)
-//     console.log(`Request type: ${req.method}`)
-//     next();
-// }, getContacts)
-
-
-
-
-// .delete(removeMark)
-
-// app.route('/contact/:contactId')
-//     // contact avec ID
-//     .get(getContactWithID)
-
-//     // mise à jour contact
-//     .put(updateContact)
-
-//     // supprimer contact    
-//     .delete(deleteContact);
-
+    .get(authService.authenticateToken, getUserWithID);
 
 export default router;
-
-

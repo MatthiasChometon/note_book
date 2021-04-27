@@ -3,6 +3,10 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 export const MarkSchema = new Schema({
+    userId: {
+        type: String,
+        required: 'Enter a user id'
+    },
     title: {
         type: String,
         required: 'Enter a title'

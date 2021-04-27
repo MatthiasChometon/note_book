@@ -1,15 +1,22 @@
 import {
     addMark,
-    deleteMark
+    deleteMark,
+    updateMark,
+    getAllMarks
 } from '../controllers/markController'
 
 import { Router } from 'express';
 const router = new Router();
 
-router.route('/user/:userId/mark')
-.post(addMark)
+import { AuthService } from '../services/authService'
+const authService = new AuthService()
 
-router.route('/user/:userId/mark/:markId')
-.delete(deleteMark)
+router.route('/user/:userId/mark')
+.post(authService.authenticateToken, addMark)
+.get(authService.authenticateToken, getAllMarks)
+
+router.route('/mark/:markId')
+.delete(authService.authenticateToken, deleteMark)
+.put(authService.authenticateToken, updateMark)
 
 export default router;
