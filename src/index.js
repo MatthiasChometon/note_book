@@ -5,6 +5,8 @@ import mongoose from 'mongoose';
 const cors = require("cors");
 const helmet = require("helmet");
 
+console.log(process.env)
+
 const app = express();
 app.use(cors({
     origin: process.env.CORS_ORIGIN
