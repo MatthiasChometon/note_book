@@ -6,7 +6,7 @@ const Mark = mongoose.model('Mark', MarkSchema);
 const User = mongoose.model('User', UserSchema);
 
 import { ModelService } from '../services/modelService'
-const userService = new ModelService(UserSchema)
+const userService = new ModelService(User)
 
 export const addMark = async (req, res) => {
     if (!req.params.userId) res.send('There is no user id')
@@ -28,7 +28,7 @@ export const deleteMark = (req, res) => {
 
 export const updateMark = (req, res) => {
     if (!req.params.markId) res.send("no id for mark")
-    Mark.findByIdAndUpdate({ _id: req.params.markId }, req.body, (err, mark) => {
+    Mark.findByIdAndUpdate({ _id: req.params.markId }, req.body,  {new: true}, (err, mark) => {
         if (err) res.json(err)
         res.json(mark)
     })

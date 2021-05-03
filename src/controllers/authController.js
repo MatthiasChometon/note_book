@@ -22,8 +22,8 @@ export const register = async (req, res) => {
 
     // try to save the user
     newUser.save((err, user) => {
-        if (err) res.send(err);
-        res.json(user);
+        if (err) return res.send(err);
+        return res.status(200).json(user);
     });
 };
 
@@ -33,17 +33,17 @@ export const login = (req, res) => {
     if(!req.body.password) res.send("no password entered")
     // Test if user exist
     User.findOne({ email: req.body.email }, async (err, user) => {
-        if (err) res.json(err)
+        if (err) return res.json(err)
         if (user == null) res.send("this user not exist")
 
         // check user password with hashed password stored in the database
         const validPassword = await bcrypt.compare(req.body.password, user.password);
-        if (!validPassword) res.status(400).json({ error: "Invalid Password" });
+        if (!validPassword) return res.status(400).json({ error: "Invalid Password" });
 
         const user_token = { email: req.body.email, password: req.body.password }
         const accessToken = authService.generateAccessToken(user_token)
         const refreshToken = jwt.sign(user_token, process.env.REFRESH_TOKEN_SECRET)
         refreshTokens.push(refreshToken)
-        res.json({ accessToken: accessToken, refreshToken: refreshToken })
+        return res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken, user: user })
     });
 }

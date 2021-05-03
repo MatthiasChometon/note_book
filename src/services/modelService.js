@@ -1,6 +1,7 @@
 export class ModelService {
     constructor(model) {
         this.model = model
+        console.log(model.name)
     }
 
     async verify(id) {

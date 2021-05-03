@@ -11,7 +11,7 @@ const router = new Router();
 import { AuthService } from '../services/authService'
 const authService = new AuthService()
 
-router.route('/user/:userId/mark')
+router.route('/user/:userId/marks')
 .post(authService.authenticateToken, addMark)
 .get(authService.authenticateToken, getAllMarks)
 
