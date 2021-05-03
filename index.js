@@ -33,12 +33,12 @@ app.use('/', authRoutes)
 
 app.use(express.static('public'));
 
-// var corsOptions = {
-//     origin: process.env.CORS_ORIGIN,
-//     optionsSuccessStatus: 200
-// }
+var corsOptions = {
+    origin: process.env.CORS_ORIGIN,
+    optionsSuccessStatus: 200
+}
 
-app.get('/', (req, res) =>
+app.get('/', cors(corsOptions), (req, res) =>
     res.send(`Serveur sur port ${PORT}`)
 );
 
