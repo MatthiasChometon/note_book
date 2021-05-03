@@ -13,7 +13,7 @@ app.use(cors({
 }));
 app.use(helmet());
 app.use(express.json({ limit: '50MB' }));
-const PORT = process.env.SERVER_PORT;
+const PORT = process.env.PORT;
 
 // connection mongoose
 mongoose.Promise = global.Promise;
