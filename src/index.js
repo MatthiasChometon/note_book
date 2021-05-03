@@ -19,16 +19,13 @@ mongoose.connect(process.env.DATABASE_URL, {
     useNewUrlParser: true
 });
 
-// bodyparser
-app.use(express.json())
-
-import markRoutes from './src/routes/markRoute'
+import markRoutes from './routes/markRoute'
 app.use('/', markRoutes)
 
-import userRoutes from './src/routes/userRoute'
+import userRoutes from './routes/userRoute'
 app.use('/', userRoutes)
 
-import authRoutes from './src/routes/authRoutes'
+import authRoutes from './routes/authRoutes'
 app.use('/', authRoutes)
 
 app.use(express.static('public'));
