@@ -18,6 +18,7 @@ export const addMark = async (req, res) => {
         res.json(mark)
     })
 }
+
 export const deleteMark = (req, res) => {
     if (!req.params.markId) res.send("no id for mark")
     Mark.findByIdAndDelete({ _id: req.params.markId }, (err) => {
