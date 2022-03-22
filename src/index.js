@@ -5,15 +5,13 @@ import mongoose from 'mongoose';
 const cors = require("cors");
 const helmet = require("helmet");
 
-console.log(process.env)
-
 const app = express();
 app.use(cors({
     origin: process.env.CORS_ORIGIN
 }));
 app.use(helmet());
 app.use(express.json({ limit: '50MB' }));
-const PORT = process.env.PORT;
+const PORT = process.env.SERVER_PORT;
 
 // connection mongoose
 mongoose.Promise = global.Promise;
@@ -32,16 +30,10 @@ app.use('/', authRoutes)
 
 app.use(express.static('public'));
 
-var corsOptions = {
-    origin: process.env.CORS_ORIGIN,
-    optionsSuccessStatus: 200
-}
-
-app.get('/', cors(corsOptions), (req, res) =>
+app.get('/', (req, res) =>
     res.send(`Serveur sur port ${PORT}`)
 );
 
 app.listen(PORT, () =>
     console.log(`votre serveur est sur le port ${PORT}`)
 );
-
